@@ -17,18 +17,28 @@ public class StringAdderTest {
     @Test
     void 공란입력시_0리턴() {
         String blank = "";
-        assertThat(StringAdder.adder(blank)).isEqualTo(0);
-        assertThat(StringAdder.adder(null)).isEqualTo(0);
+        assertThat(StringAdder.add(blank)).isEqualTo(0);
+        assertThat(StringAdder.add(null)).isEqualTo(0);
     }
 
     @DisplayName("'1,2,3','1:2,3' 계산")
     @Test
     void add() {
         String input = "1,2,3";
-        assertThat(StringAdder.adder(input)).isEqualTo(6);
+        assertThat(StringAdder.add(input)).isEqualTo(6);
 
         input = "1:2,3";
-        assertThat(StringAdder.adder(input)).isEqualTo(6);
+        assertThat(StringAdder.add(input)).isEqualTo(6);
+    }
+
+    @DisplayName("커스텀식 최종 계산")
+    @Test
+    void addCustom() {
+        String input = "//;\n1;2;3";
+        assertThat(StringAdder.add(input)).isEqualTo(6);
+
+        input = "//]\n1]6]3";
+        assertThat(StringAdder.add(input)).isEqualTo(10);
     }
 
     @DisplayName("커스텀식인지 확인")
@@ -74,6 +84,6 @@ public class StringAdderTest {
         String input = "//;\n1;2;3";
         List<String> result = new ArrayList<>(Arrays.asList("1;2;3", ";"));
 
-        assertThat(StringAdder.splitCustom(input)).isEqualTo(result);
+        assertThat(StringAdder.numbersAndCustomMark(input)).isEqualTo(result);
     }
 }
