@@ -11,9 +11,15 @@ public class StringAdder {
             return 0;
         }
         if (isNotCustom(input)) {
-            return sumWhenList(toIntegerList(split(input)));
+            return addNotCustom(input);
         }
         return addCustom(input);
+    }
+
+    private static int addNotCustom(String input) {
+        String[] splittedInput = split(input);
+        numberValidateNotCustom(splittedInput);
+        return sumWhenList(toIntegerList(splittedInput));
     }
 
     private static boolean isNullOrBlank(String input) {
@@ -72,7 +78,7 @@ public class StringAdder {
     private static void isIntegerInput(String str) {
         Pattern pattern = Pattern.compile("\\D");
         if (pattern.matcher(str).find()) {
-            throw new RuntimeException();
+            throw new RuntimeException("숫자만 입력 가능합니다.");
         }
     }
 }

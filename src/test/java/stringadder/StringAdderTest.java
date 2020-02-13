@@ -29,6 +29,10 @@ public class StringAdderTest {
 
         input = "1:2,3";
         assertThat(StringAdder.add(input)).isEqualTo(6);
+
+        assertThatThrownBy(() -> StringAdder.add("1,2,a"))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("숫자만 입력 가능합니다.");
     }
 
     @DisplayName("커스텀식 최종 계산")
@@ -94,6 +98,7 @@ public class StringAdderTest {
     void numberValidate() {
         String[] splittedInput = new String[]{"1", "2", "a"};
         assertThatThrownBy(() -> StringAdder.numberValidateNotCustom(splittedInput))
-                .isInstanceOf(RuntimeException.class);
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("숫자만 입력 가능합니다.");
     }
 }
