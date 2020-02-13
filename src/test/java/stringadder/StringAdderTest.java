@@ -30,9 +30,25 @@ public class StringAdderTest {
         input = "1:2,3";
         assertThat(StringAdder.add(input)).isEqualTo(6);
 
+        input = "//-\n1-2-3";
+        assertThat(StringAdder.add(input)).isEqualTo(6);
+
+
         assertThatThrownBy(() -> StringAdder.add("1,2,a"))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("숫자만 입력 가능합니다.");
+
+        assertThatThrownBy(() -> StringAdder.add("-1,2,3"))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("0 이상의 수를 입력하세요");
+
+        assertThatThrownBy(() -> StringAdder.add("//;\n1;2;a"))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("숫자만 입력 가능합니다.");
+
+        assertThatThrownBy(() -> StringAdder.add("//-\n1--2-3"))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("0 이상의 수를 입력하세요");
     }
 
     @DisplayName("커스텀식 최종 계산")
@@ -52,10 +68,10 @@ public class StringAdderTest {
     @Test
     void isNotCustom() {
         String input = "1,2,3";
-        assertThat(StringAdder.isNotCustom(input)).isFalse();
+        assertThat(StringAdder.isNotCustom(input)).isTrue();
 
         input = "//;\n1;2;3";
-        assertThat(StringAdder.isNotCustom(input)).isTrue();
+        assertThat(StringAdder.isNotCustom(input)).isFalse();
 
     }
 
@@ -91,14 +107,43 @@ public class StringAdderTest {
         String input = "//;\n1;2;3";
         List<String> result = new ArrayList<>(Arrays.asList("1;2;3", ";"));
         assertThat(StringAdder.numbersAndCustomMark(input)).isEqualTo(result);
+
+        input = "//-\n-1--2-3";
+        result = new ArrayList<>(Arrays.asList("-1--2-3", "-"));
+        assertThat(StringAdder.numbersAndCustomMark(input)).isEqualTo(result);
     }
 
     @DisplayName("숫자가 아닌 문자 입력 예외")
     @Test
-    void numberValidate() {
+    void numberValidate1() {
         String[] splittedInput = new String[]{"1", "2", "a"};
-        assertThatThrownBy(() -> StringAdder.numberValidateNotCustom(splittedInput))
+        assertThatThrownBy(() -> StringAdder.validateNumbers(splittedInput))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("숫자만 입력 가능합니다.");
+    }
+
+    @DisplayName("음수 입력 예외")
+    @Test
+    void numberValidate2() {
+        String[] splittedInput = new String[]{"-1", "2", "3"};
+        assertThatThrownBy(() -> StringAdder.validateNumbers(splittedInput))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("0 이상의 수를 입력하세요");
+    }
+
+    @DisplayName("커스텀 마크가 마이너스 일때 split")
+    @Test
+    void splitWhenCustomMarkIsMinus() {
+        String input = "1-2-3";
+        String[] result = new String[]{"1", "2", "3"};
+        assertThat(StringAdder.splitWhenCustomMarkIsMinus(input)).isEqualTo(result);
+
+        input = "1--2-3";
+        result = new String[]{"1", "-2", "3"};
+        assertThat(StringAdder.splitWhenCustomMarkIsMinus(input)).isEqualTo(result);
+
+        input = "-1--2-3";
+        result = new String[]{"-1", "-2", "3"};
+        assertThat(StringAdder.splitWhenCustomMarkIsMinus(input)).isEqualTo(result);
     }
 }

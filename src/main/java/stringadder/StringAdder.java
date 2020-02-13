@@ -6,6 +6,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StringAdder {
+    public static final String ERROR_MESSAGE_NOT_INTEGER = "숫자만 입력 가능합니다.";
+
     public static int add(String input) {
         if (isNullOrBlank(input)) {
             return 0;
@@ -13,27 +15,51 @@ public class StringAdder {
         if (isNotCustom(input)) {
             return addNotCustom(input);
         }
-        return addCustom(input);
+        return splitCustomMarkAndSum(input);
     }
 
     private static int addNotCustom(String input) {
-        String[] splittedInput = split(input);
-        numberValidateNotCustom(splittedInput);
-        return sumWhenList(toIntegerList(splittedInput));
+        String[] splittedNumbers = split(input);
+        return validateAndSum(splittedNumbers);
+    }
+
+    private static int validateAndSum(String[] splittedNumbers) {
+        validateNumbers(splittedNumbers);
+        return sumWhenList(toIntegerList(splittedNumbers));
     }
 
     private static boolean isNullOrBlank(String input) {
         return input == null || input.isEmpty();
     }
 
-    private static int addCustom(String input) {
+    private static int splitCustomMarkAndSum(String input) {
         String numbers = numbersAndCustomMark(input).get(0);
         String customMark = numbersAndCustomMark(input).get(1);
-        return sumWhenList(toIntegerList(splitWhenCustomMark(numbers, customMark)));
+        return addCustom(numbers, customMark);
+    }
+
+    private static int addCustom(String numbers, String customMark) {
+        String[] splittedNumbers = splitWhenCustomMark(numbers, customMark);
+        return validateAndSum(splittedNumbers);
     }
 
     private static String[] splitWhenCustomMark(String input, String customMark) {
-        return input.split(customMark);
+        if (!customMark.equals("-")) {
+            return input.split(customMark);
+        }
+        return splitWhenCustomMarkIsMinus(input);
+    }
+
+    public static String[] splitWhenCustomMarkIsMinus(String input) {
+        String[] result = new String[3];
+        Pattern pattern = Pattern.compile("(-?\\d)-(-?\\d)-(-?\\d)");
+        Matcher matcher = pattern.matcher(input);
+        if (matcher.find()) {
+            result[0] = matcher.group(1);
+            result[1] = matcher.group(2);
+            result[2] = matcher.group(3);
+        }
+        return result;
     }
 
     public static boolean isNotCustom(String input) {
@@ -69,16 +95,23 @@ public class StringAdder {
         return result;
     }
 
-    public static void numberValidateNotCustom(String[] splittedInput) {
+    public static void validateNumbers(String[] splittedInput) {
         for (String str : splittedInput) {
-            isIntegerInput(str);
+            isNegativeNumber(str);
+            isNotIntegerInput(str);
         }
     }
 
-    private static void isIntegerInput(String str) {
+    private static void isNegativeNumber(String str) {
+        if (str.contains("-")) {
+            throw new RuntimeException("0 이상의 수를 입력하세요");
+        }
+    }
+
+    private static void isNotIntegerInput(String str) {
         Pattern pattern = Pattern.compile("\\D");
         if (pattern.matcher(str).find()) {
-            throw new RuntimeException("숫자만 입력 가능합니다.");
+            throw new RuntimeException(ERROR_MESSAGE_NOT_INTEGER);
         }
     }
 }
