@@ -1,17 +1,49 @@
 package stringadder;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
 public class StringAdderTest {
+    String[] splittedString = new String[]{"1", "2", "3"};
+    List<Integer> numbers1 = new ArrayList<>(Arrays.asList(1, 2, 3));
+    List<Integer> numbers2 = new ArrayList<>(Arrays.asList(1, 2));
 
     @Test
     void 공란입력시_0리턴() {
         String blank = "";
         assertThat(StringAdder.adder(blank)).isEqualTo(0);
-
         assertThat(StringAdder.adder(null)).isEqualTo(0);
+    }
 
+    @DisplayName("String[] 입력시 ArrayList<Integer>로 리턴")
+    @Test
+    void toInt() {
+        assertThat(StringAdder.toInt(splittedString)).isEqualTo(numbers1);
+    }
+
+    @DisplayName("ArrayList<Integer> 를 주면 sum하여 리턴")
+    @Test
+    void SumList() {
+        int result1 = StringAdder.sumList(numbers1);
+        int result2 = StringAdder.sumList(numbers2);
+
+        assertThat(result1).isEqualTo(6);
+        assertThat(result2).isEqualTo(3);
+    }
+
+    @DisplayName("split")
+    @Test
+    void split() {
+        String str1 = "1,2,3";
+        assertThat(StringAdder.split(str1)).isEqualTo(splittedString);
+
+        String str2 = "1:2,3";
+        assertThat(StringAdder.split(str2)).isEqualTo(splittedString);
     }
 }
