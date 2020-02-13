@@ -21,10 +21,31 @@ public class StringAdderTest {
         assertThat(StringAdder.adder(null)).isEqualTo(0);
     }
 
+    @DisplayName("'1,2,3','1:2,3' 계산")
+    @Test
+    void add() {
+        String input = "1,2,3";
+        assertThat(StringAdder.adder(input)).isEqualTo(6);
+
+        input = "1:2,3";
+        assertThat(StringAdder.adder(input)).isEqualTo(6);
+    }
+
+    @DisplayName("커스텀식인지 확인")
+    @Test
+    void isNotCustom() {
+        String input = "1,2,3";
+        assertThat(StringAdder.isNotCustom(input)).isFalse();
+
+        input = "//;\n1;2;3";
+        assertThat(StringAdder.isNotCustom(input)).isTrue();
+
+    }
+
     @DisplayName("String[] 입력시 ArrayList<Integer>로 리턴")
     @Test
     void toInt() {
-        assertThat(StringAdder.toInt(splittedString)).isEqualTo(numbers1);
+        assertThat(StringAdder.toIntegerList(splittedString)).isEqualTo(numbers1);
     }
 
     @DisplayName("ArrayList<Integer> 를 주면 sum하여 리턴")
@@ -45,5 +66,14 @@ public class StringAdderTest {
 
         String str2 = "1:2,3";
         assertThat(StringAdder.split(str2)).isEqualTo(splittedString);
+    }
+
+    @DisplayName("'//;\n1;2;3' 입력시 ';' 와 '1;2;3' 로 나누는 기능")
+    @Test
+    void splitCustom() {
+        String input = "//;\n1;2;3";
+        List<String> result = new ArrayList<>(Arrays.asList("1;2;3", ";"));
+
+        assertThat(StringAdder.splitCustom(input)).isEqualTo(result);
     }
 }
