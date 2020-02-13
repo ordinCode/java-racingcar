@@ -61,8 +61,8 @@ public class StringAdderTest {
     @DisplayName("ArrayList<Integer> 를 주면 sum하여 리턴")
     @Test
     void SumList() {
-        int result1 = StringAdder.sumList(numbers1);
-        int result2 = StringAdder.sumList(numbers2);
+        int result1 = StringAdder.sumWhenList(numbers1);
+        int result2 = StringAdder.sumWhenList(numbers2);
 
         assertThat(result1).isEqualTo(6);
         assertThat(result2).isEqualTo(3);

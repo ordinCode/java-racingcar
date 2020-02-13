@@ -7,19 +7,23 @@ import java.util.regex.Pattern;
 
 public class StringAdder {
     public static int add(String input) {
-        if (input == null || input.isEmpty()) {
+        if (isNullOrBlank(input)) {
             return 0;
         }
         if (isNotCustom(input)) {
-            return sumList(toIntegerList(split(input)));
+            return sumWhenList(toIntegerList(split(input)));
         }
         return addCustom(input);
+    }
+
+    private static boolean isNullOrBlank(String input) {
+        return input == null || input.isEmpty();
     }
 
     private static int addCustom(String input) {
         String numbers = numbersAndCustomMark(input).get(0);
         String customMark = numbersAndCustomMark(input).get(1);
-        return sumList(toIntegerList(splitWhenCustomMark(numbers, customMark)));
+        return sumWhenList(toIntegerList(splitWhenCustomMark(numbers, customMark)));
     }
 
     private static String[] splitWhenCustomMark(String input, String customMark) {
@@ -38,7 +42,7 @@ public class StringAdder {
         return result;
     }
 
-    public static int sumList(List<Integer> numbers) {
+    public static int sumWhenList(List<Integer> numbers) {
         return numbers.stream()
                 .reduce((x, y) -> x + y)
                 .get();
