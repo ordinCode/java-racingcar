@@ -62,4 +62,17 @@ public class StringAdder {
         }
         return result;
     }
+
+    public static void numberValidateNotCustom(String[] splittedInput) {
+        for (String str : splittedInput) {
+            isIntegerInput(str);
+        }
+    }
+
+    private static void isIntegerInput(String str) {
+        Pattern pattern = Pattern.compile("\\D");
+        if (pattern.matcher(str).find()) {
+            throw new RuntimeException();
+        }
+    }
 }

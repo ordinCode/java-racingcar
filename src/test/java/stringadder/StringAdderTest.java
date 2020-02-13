@@ -39,6 +39,9 @@ public class StringAdderTest {
 
         input = "//]\n1]6]3";
         assertThat(StringAdder.add(input)).isEqualTo(10);
+
+        input = "//-\n1-6-3";
+        assertThat(StringAdder.add(input)).isEqualTo(10);
     }
 
     @DisplayName("커스텀식인지 확인")
@@ -83,7 +86,14 @@ public class StringAdderTest {
     void splitCustom() {
         String input = "//;\n1;2;3";
         List<String> result = new ArrayList<>(Arrays.asList("1;2;3", ";"));
-
         assertThat(StringAdder.numbersAndCustomMark(input)).isEqualTo(result);
+    }
+
+    @DisplayName("숫자가 아닌 문자 입력 예외")
+    @Test
+    void numberValidate() {
+        String[] splittedInput = new String[]{"1", "2", "a"};
+        assertThatThrownBy(() -> StringAdder.numberValidateNotCustom(splittedInput))
+                .isInstanceOf(RuntimeException.class);
     }
 }
