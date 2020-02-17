@@ -3,16 +3,15 @@ package racingcar.model;
 import java.util.Objects;
 
 public class Car {
-    private static final int ONE_STEP = 1;
     private final String name;
-    private int position = 0;
+    private Position position = new Position();
 
     public Car(String name) {
         this.name = name;
     }
 
     public void move() {
-        position += ONE_STEP;
+        position.plusOneStep();
     }
 
     public String getName() {
@@ -20,7 +19,7 @@ public class Car {
     }
 
     public int getPosition() {
-        return position;
+        return position.getPosition();
     }
 
     @Override

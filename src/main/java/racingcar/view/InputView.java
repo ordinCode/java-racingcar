@@ -20,8 +20,8 @@ public class InputView {
         System.out.println(ROUND_INPUT_MESSAGE);
         String input = scanner.next();
         try {
-            return ValidateInput.ValidateCount(input);
-        } catch (IllegalArgumentException e) {
+            return ValidateInput.ValidateRound(input);
+        } catch (NumberFormatException e) {
             throw new IllegalArgumentException(ValidateInput.INTEGER_ERROR_MESSAGE);
         } catch (Exception e) {
             throw new IllegalArgumentException(ValidateInput.MIN_ROUND_NUMBER_ERROR_MESSAGE);

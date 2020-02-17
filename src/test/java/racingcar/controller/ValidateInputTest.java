@@ -33,12 +33,8 @@ public class ValidateInputTest {
     @Test
     void inputCount() {
         String input = "a";
-        assertThatThrownBy(() -> ValidateInput.ValidateCount(input))
+        assertThatThrownBy(() -> ValidateInput.ValidateRound(input))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("숫자가 아닌 문자를 입력하였습니다.");
-
-        String inputNumber = "1";
-        int result = 1;
-        assertThat(result).isEqualTo(ValidateInput.ValidateCount(inputNumber));
     }
 }

@@ -19,7 +19,7 @@ public class ValidateInput {
         return round <= GameManager.ZERO;
     }
 
-    public static int ValidateCount(String input) throws Exception {
+    public static int ValidateRound(String input) throws Exception {
         int integerInput = Integer.parseInt(input);
         if (isUnderZero(integerInput)) {
             throw new IllegalArgumentException();
